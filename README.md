@@ -40,7 +40,7 @@ The current settings are displayed in a box at the top left of the screen (The H
 
 - Avg Temperature of the scene
 - Label threshold (temperature threshold at which to display floating min max values)
-- Colormpa
+- Colormap
 - Blur (blur radius)
 - Scaling multiplier
 - Contrast value
