@@ -48,7 +48,7 @@ The current settings are displayed in a box at the top left of the screen (The H
 - Recording status
 
 
-
+---
 
 ***Key Bindings***
 
