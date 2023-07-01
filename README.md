@@ -44,9 +44,16 @@ The following features have been implemented:
 
 - Snapshot images are implemented (saved as PNG in the working directory).
 
-![Screenshot](media/TC00120230701-131032.png)
+The current settings are displayed in a box at the top left of the screen (The HUD):
 
-
+- Avg Temperature of the scene
+- Label threshold (temperature threshold at which to display floating min max values)
+- Colormpa
+- Blur (blur radius)
+- Scaling multiplier
+- Contrast value
+- Time of the last snapshot image
+- Recording status
 
 
 
