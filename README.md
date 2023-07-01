@@ -18,12 +18,30 @@ This program, and associated information is Open Source (see Licence), but if yo
 This readme is accompanied by youtube videos. Visit my Youtube Channel at: https://www.youtube.com/leslaboratory
 
 ***Features***
-
-Include image of colormaps
 <img align="right" src="media/colormaps.png">
-Next text...
 
-***Key Bindings***
+The following features have been implemented:
+
+Bicubic interpolation to scale the small 256*192 image to something more presentable! Available scaling multiplier range from 1-5 (Note: This will not auto change the window size on the Pi!?). Optional blur can be applied if you want to smooth out the video. 
+
+Fullscreen Windowed mode (Note going back to windowed does not seem to work on the Pi! Open CV probably needs recompiling!)
+
+False coloring of the video image is provided. the avilable colormaps are listed on the right.
+
+Variable Contrast.
+
+Average Scene Temperature.
+
+Center of scene temperature monitoring (Crosshairs).
+
+Floating Maximum and Minimum temperature values within the scene.
+
+Video recording is implemented.
+
+Snapshot images are implemented.
+
+
+
 
 ![Screenshot](media/fluorescent.png)
 
@@ -31,8 +49,7 @@ Tested on Debian all features are working correctly
 This will work on the Pi However a number of workarounds are implemented!
 Seemingly there are bugs in the compiled version of cv2 that ships with the Pi!
 
-Key Bindings:
-
+***Key Bindings***
 a z: Increase/Decrease Blur
 
 s x: Floating High and Low Temp Label Threshold'
