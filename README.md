@@ -20,6 +20,8 @@ This readme is accompanied by youtube videos. Visit my Youtube Channel at: https
 ***Features***
 <img align="right" src="media/colormaps.png">
 
+Tested on Debian all features are working correctly This has been tested on the Pi However a number of workarounds are implemented! Seemingly there are bugs in the compiled version of openCV that ships with the Pi!!
+
 The following features have been implemented:
 
 - Bicubic interpolation to scale the small 256*192 image to something more presentable! Available scaling multiplier range from 1-5 (Note: This will not auto change the window size on the Pi (openCV needs recompiling), however you can manually resize). Optional blur can be applied if you want to smooth out the pixels. 
@@ -36,18 +38,15 @@ The following features have been implemented:
 
 - Floating Maximum and Minimum temperature values within the scene, with variable threshold.
 
-- Video recording is implemented (Saved as AVI in the working directory)
+- Video recording is implemented (saved as AVI in the working directory).
 
-- Snapshot images are implemented (saved as PNG in the working directory)
-
-
+- Snapshot images are implemented (saved as PNG in the working directory).
 
 
-![Screenshot](media/fluorescent.png)
 
-Tested on Debian all features are working correctly
-This will work on the Pi However a number of workarounds are implemented!
-Seemingly there are bugs in the compiled version of cv2 that ships with the Pi!
+
+
+
 
 ***Key Bindings***
 a z: Increase/Decrease Blur
