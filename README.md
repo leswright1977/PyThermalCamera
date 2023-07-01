@@ -49,7 +49,10 @@ The current settings are displayed in a box at the top left of the screen (The H
 
 
 
+
 ***Key Bindings***
+
+
 a z: Increase/Decrease Blur
 
 s x: Floating High and Low Temp Label Threshold'
