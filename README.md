@@ -27,21 +27,13 @@ The following features have been implemented:
 <img align="right" src="media/colormaps.png">
 
 - Bicubic interpolation to scale the small 256*192 image to something more presentable! Available scaling multiplier range from 1-5 (Note: This will not auto change the window size on the Pi (openCV needs recompiling), however you can manually resize). Optional blur can be applied if you want to smooth out the pixels. 
-
 - Fullscreen / Windowed mode (Note going back to windowed  from fullscreen does not seem to work on the Pi! OpenCV probably needs recompiling!).
-
 - False coloring of the video image is provided. the avilable colormaps are listed on the right.
-
 - Variable Contrast.
-
 - Average Scene Temperature.
-
 - Center of scene temperature monitoring (Crosshairs).
-
 - Floating Maximum and Minimum temperature values within the scene, with variable threshold.
-
 - Video recording is implemented (saved as AVI in the working directory).
-
 - Snapshot images are implemented (saved as PNG in the working directory).
 
 The current settings are displayed in a box at the top left of the screen (The HUD):
