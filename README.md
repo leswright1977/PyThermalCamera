@@ -7,7 +7,7 @@ Check out Leo's Github here: https://github.com/LeoDJ/P2Pro-Viewer/tree/main
 
 ***Introduction***
 
-![Screenshot](media/TC00120230701-130753.png)
+![Screenshot](media/TC00120230701-131032.png)
 
 This is a quick and dirty Python implimentation of Thermal Camera software for the Topdon TC001!
 (https://www.amazon.co.uk/dp/B0BBRBMZ58)
