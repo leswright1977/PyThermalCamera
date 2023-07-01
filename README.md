@@ -34,10 +34,17 @@ Seemingly there are bugs in the compiled version of cv2 that ships with the Pi!
 Key Bindings:
 
 a z: Increase/Decrease Blur
-s x: Floating High and Low Temp Label Threshold
+
+s x: Floating High and Low Temp Label Threshold'
+
 d c: Change Interpolated scale Note: This will not change the window size on the Pi
+
 f v: Contrast
+
 q w: Fullscreen Windowed (note going back to windowed does not seem to work on the Pi!)
+
 r t: Record and Stop
+
 m : Cycle through ColorMaps
+
 h : Toggle HUD
