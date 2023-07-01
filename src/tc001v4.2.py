@@ -20,6 +20,7 @@ print('d c: Change Interpolated scale Note: This will not change the window size
 print('f v: Contrast')
 print('q w: Fullscreen Windowed (note going back to windowed does not seem to work on the Pi!)')
 print('r t: Record and Stop')
+print('p : Snapshot')
 print('m : Cycle through ColorMaps')
 print('h : Toggle HUD')
 
@@ -76,12 +77,21 @@ threshold = 2
 hud = True
 recording = False
 elapsed = "00:00:00"
+snaptime = "None"
 
 def rec():
 	now = time.strftime("%Y%m%d--%H%M%S")
 	#do NOT use mp4 here, it is flakey!
 	videoOut = cv2.VideoWriter(now+'output.avi', cv2.VideoWriter_fourcc(*'XVID'),25, (newWidth,newHeight))
 	return(videoOut)
+
+def snapshot(heatmap):
+	#I would put colons in here, but it Win throws a fit if you try and open them!
+	now = time.strftime("%Y%m%d-%H%M%S") 
+	snaptime = time.strftime("%H:%M:%S")
+	cv2.imwrite("TC001"+now+".png", heatmap)
+	return snaptime
+ 
 
 while(cap.isOpened()):
 	# Capture frame-by-frame
@@ -180,8 +190,6 @@ while(cap.isOpened()):
 			heatmap = cv2.applyColorMap(bgr, cv2.COLORMAP_RAINBOW)
 			heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
 			cmapText = 'Inv Rainbow'
-		
-
 
 		#print(heatmap.shape)
 
@@ -195,7 +203,7 @@ while(cap.isOpened()):
 		(int(newWidth/2),int(newHeight/2)-20),(0,0,0),1) #vline
 		cv2.line(heatmap,(int(newWidth/2)+20,int(newHeight/2)),\
 		(int(newWidth/2)-20,int(newHeight/2)),(0,0,0),1) #hline
-
+		#show temp
 		cv2.putText(heatmap,str(temp)+' C', (int(newWidth/2)+10, int(newHeight/2)-10),\
 		cv2.FONT_HERSHEY_SIMPLEX, 0.45,(0, 0, 0), 2, cv2.LINE_AA)
 		cv2.putText(heatmap,str(temp)+' C', (int(newWidth/2)+10, int(newHeight/2)-10),\
@@ -203,7 +211,7 @@ while(cap.isOpened()):
 
 		if hud==True:
 			# display black box for our data
-			cv2.rectangle(heatmap, (0, 0),(160, 105), (0,0,0), -1)
+			cv2.rectangle(heatmap, (0, 0),(160, 120), (0,0,0), -1)
 			# put text in the box
 			cv2.putText(heatmap,'Avg Temp: '+str(avgtemp)+' C', (10, 14),\
 			cv2.FONT_HERSHEY_SIMPLEX, 0.4,(0, 255, 255), 1, cv2.LINE_AA)
@@ -224,15 +232,17 @@ while(cap.isOpened()):
 			cv2.FONT_HERSHEY_SIMPLEX, 0.4,(0, 255, 255), 1, cv2.LINE_AA)
 
 
+			cv2.putText(heatmap,'Snapshot: '+snaptime+' ', (10, 98),\
+			cv2.FONT_HERSHEY_SIMPLEX, 0.4,(0, 255, 255), 1, cv2.LINE_AA)
+
 			if recording == False:
-				cv2.putText(heatmap,'Recording: '+elapsed, (10, 98),\
+				cv2.putText(heatmap,'Recording: '+elapsed, (10, 112),\
 				cv2.FONT_HERSHEY_SIMPLEX, 0.4,(200, 200, 200), 1, cv2.LINE_AA)
 			if recording == True:
-				cv2.putText(heatmap,'Recording: '+elapsed, (10, 98),\
+				cv2.putText(heatmap,'Recording: '+elapsed, (10, 112),\
 				cv2.FONT_HERSHEY_SIMPLEX, 0.4,(40, 40, 255), 1, cv2.LINE_AA)
 		
-		
-
+		#Yeah, this looks like we can probably do this next bit more efficiently!
 		#display floating max temp
 		if maxtemp > avgtemp+threshold:
 			cv2.circle(heatmap, (mrow*scale, mcol*scale), 5, (0,0,0), 2)
@@ -332,6 +342,9 @@ while(cap.isOpened()):
 		if keyPress == ord('t'): #f to finish reording
 			recording = False
 			elapsed = "00:00:00"
+
+		if keyPress == ord('p'): #f to finish reording
+			snaptime = snapshot(heatmap)
 
 		if keyPress == ord('q'):
 			break
