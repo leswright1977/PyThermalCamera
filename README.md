@@ -20,9 +20,8 @@ This readme is accompanied by youtube videos. Visit my Youtube Channel at: https
 ***Features***
 
 Include image of colormaps
-![Screenshot](media/colormaps.png)
-
 <img align="right" src="media/colormaps.png">
+Next text...
 
 ***Key Bindings***
 
