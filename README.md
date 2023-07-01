@@ -13,7 +13,7 @@ No commands are sent the the camera, instead, we take the raw video feed, do som
 
 ![Screenshot](media/TC00120230701-131032.png)
 
-This program, and associated information is Open Source (see Licence), but if you have gotten value from these kinds of projects and think they are worth something, please consider donating: https://paypal.me/leslaboratory?locale.x=en_GB This project is a follow on from: https://github.com/leswright1977/PySpectrometer
+This program, and associated information is Open Source (see Licence), but if you have gotten value from these kinds of projects and think they are worth something, please consider donating: https://paypal.me/leslaboratory?locale.x=en_GB 
 
 This readme is accompanied by youtube videos. Visit my Youtube Channel at: https://www.youtube.com/leslaboratory
 
