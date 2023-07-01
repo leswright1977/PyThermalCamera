@@ -22,6 +22,8 @@ This readme is accompanied by youtube videos. Visit my Youtube Channel at: https
 Include image of colormaps
 ![Screenshot](media/fluorescent.png)
 
+<img align="right" src="media/colormap.png">
+
 ***Key Bindings***
 
 ![Screenshot](media/fluorescent.png)
