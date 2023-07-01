@@ -44,7 +44,7 @@ The following features have been implemented:
 
 - Snapshot images are implemented (saved as PNG in the working directory).
 
-
+![Screenshot](media/TC00120230701-131032.png)
 
 
 
