@@ -21,9 +21,10 @@ This readme is accompanied by youtube videos. Visit my Youtube Channel at: https
 
 
 Tested on Debian all features are working correctly This has been tested on the Pi However a number of workarounds are implemented! Seemingly there are bugs in the compiled version of openCV that ships with the Pi!!
-<img align="right" src="media/colormaps.png">
 
 The following features have been implemented:
+
+<img align="right" src="media/colormaps.png">
 
 - Bicubic interpolation to scale the small 256*192 image to something more presentable! Available scaling multiplier range from 1-5 (Note: This will not auto change the window size on the Pi (openCV needs recompiling), however you can manually resize). Optional blur can be applied if you want to smooth out the pixels. 
 
