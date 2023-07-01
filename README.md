@@ -18,9 +18,10 @@ This program, and associated information is Open Source (see Licence), but if yo
 This readme is accompanied by youtube videos. Visit my Youtube Channel at: https://www.youtube.com/leslaboratory
 
 ***Features***
-<img align="right" src="media/colormaps.png">
+
 
 Tested on Debian all features are working correctly This has been tested on the Pi However a number of workarounds are implemented! Seemingly there are bugs in the compiled version of openCV that ships with the Pi!!
+<img align="right" src="media/colormaps.png">
 
 The following features have been implemented:
 
