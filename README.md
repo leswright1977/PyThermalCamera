@@ -71,4 +71,13 @@ The current settings are displayed in a box at the top left of the screen (The H
 
 - m : Cycle through ColorMaps
 
+---
+
+TODO:
+
+No attempt has been made to refactor the code (Yet!)!
+The code would benefit from threading especially on low speed but multicore architectures like the Pi!
+I might add a graph.
+I may add the ability to arbitrarily measure points.
+
 - h : Toggle HUD
