@@ -51,6 +51,11 @@ The current settings are displayed in a box at the top left of the screen (The H
 - Time of the last snapshot image
 - Recording status
 
+---
+
+***Running the Program***
+
+STUFFFFFFF!
 
 ---
 
