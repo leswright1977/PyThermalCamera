@@ -7,7 +7,7 @@ Check out Leo's Github here: https://github.com/LeoDJ/P2Pro-Viewer/tree/main
 
 ---
 
-***Introduction***
+## Introduction
 
 This is a quick and dirty Python implimentation of Thermal Camera software for the Topdon TC001!
 (https://www.amazon.co.uk/dp/B0BBRBMZ58)
@@ -21,7 +21,7 @@ This readme is accompanied by youtube videos. Visit my Youtube Channel at: https
 
 ---
 
-***Features***
+## Features
 
 
 Tested on Debian all features are working correctly This has been tested on the Pi However a number of workarounds are implemented! Seemingly there are bugs in the compiled version of openCV that ships with the Pi!!
@@ -54,15 +54,16 @@ The current settings are displayed in a box at the top left of the screen (The H
 ---
 
 
-***Dependencies***
+## Dependencies
 
 Python3 OpenCV Must be installed:
 
 
-Run: sudo apt-get install python3-opencv
+Run: **sudo apt-get install python3-opencv**
 
+---
 
-***Running the Program***
+## Running the Program
 
 In src you will find two programs:
 
@@ -82,7 +83,7 @@ Error checking will be implemented after I refactor and optimize the code!
 
 ---
 
-***Key Bindings***
+## Key Bindings
 
 
 - a z: Increase/Decrease Blur
@@ -103,8 +104,9 @@ Error checking will be implemented after I refactor and optimize the code!
 
 ---
 
-***TODO:***
+## TODO:
 
+- No Error checking is implemented!
 - No attempt has been made to refactor the code (Yet!)!
 - The code would benefit from threading especially on low speed but multicore architectures like the Pi!
 - I might add a graph.
