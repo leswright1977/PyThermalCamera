@@ -53,9 +53,32 @@ The current settings are displayed in a box at the top left of the screen (The H
 
 ---
 
+
+***Dependencies***
+
+Python3 OpenCV Must be installed:
+
+
+Run: sudo apt-get install python3-opencv
+
+
 ***Running the Program***
 
-STUFFFFFFF!
+In src you will find two programs:
+
+**tc001-RAW.py** Just demonstrates how to grab raw frames from the Thermal Camera, a starting point if you want to code your own app.
+
+
+**tc001v4.2.py** The main program!
+
+To run it plug in the thermal camera and run: **v4l2-ctl --list-devices** to list the devices on the system. You will need its device number.
+
+Assuming the device number is 0 simply issue: **python3 tc001v4.2.py --device 0**
+
+**Note**
+This is in Alpha. No error checking has been implemented yet! So if the program tries to start, then quits, either a camera is not connected, or you have entered the wrong device number.
+
+Error checking will be implemented after I refactor and optimize the code!
 
 ---
 
