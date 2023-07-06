@@ -5,7 +5,7 @@ Huge kudos to LeoDJ on the EEVBlog forum for reverse engineering the image forma
 https://www.eevblog.com/forum/thermal-imaging/infiray-and-their-p2-pro-discussion/200/
 Check out Leo's Github here: https://github.com/LeoDJ/P2Pro-Viewer/tree/main
 
----
+
 
 ## Introduction
 
@@ -19,7 +19,7 @@ This program, and associated information is Open Source (see Licence), but if yo
 
 This readme is accompanied by youtube videos. Visit my Youtube Channel at: https://www.youtube.com/leslaboratory
 
----
+
 
 ## Features
 
@@ -51,7 +51,7 @@ The current settings are displayed in a box at the top left of the screen (The H
 - Time of the last snapshot image
 - Recording status
 
----
+
 
 
 ## Dependencies
@@ -61,7 +61,7 @@ Python3 OpenCV Must be installed:
 
 Run: **sudo apt-get install python3-opencv**
 
----
+
 
 ## Running the Program
 
@@ -81,7 +81,7 @@ This is in Alpha. No error checking has been implemented yet! So if the program 
 
 Error checking will be implemented after I refactor and optimize the code!
 
----
+
 
 ## Key Bindings
 
@@ -102,7 +102,7 @@ Error checking will be implemented after I refactor and optimize the code!
   
 - h : Toggle HUD
 
----
+
 
 ## TODO:
 
