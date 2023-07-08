@@ -19,6 +19,8 @@ This program, and associated information is Open Source (see Licence), but if yo
 
 This readme is accompanied by youtube videos. Visit my Youtube Channel at: https://www.youtube.com/leslaboratory
 
+The video is here: https://youtu.be/PiVwZoQ8_jQ
+
 
 
 ## Features
