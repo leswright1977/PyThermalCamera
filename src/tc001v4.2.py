@@ -55,10 +55,11 @@ cap = cv2.VideoCapture('/dev/video'+str(dev), cv2.CAP_V4L)
 #cap = cv2.VideoCapture(0)
 #pull in the video but do NOT automatically convert to RGB, else it breaks the temperature data!
 #https://stackoverflow.com/questions/63108721/opencv-setting-videocap-property-to-cap-prop-convert-rgb-generates-weird-boolean
-if isPi == True:
-	cap.set(cv2.CAP_PROP_CONVERT_RGB, 0.0)
+
+if isPi:
+    cap.set(cv2.CAP_PROP_CONVERT_RGB, 0.0)
 else:
-	cap.set(cv2.CAP_PROP_CONVERT_RGB, False)
+    cap.set(cv2.CAP_PROP_CONVERT_RGB, 0)
 
 #256x192 General settings
 width = 256 #Sensor width
@@ -144,10 +145,11 @@ while(cap.isOpened()):
 		avgtemp = (avgtemp/64)-273.15
 		avgtemp = round(avgtemp,2)
 
-		
-
 		# Convert the real image to RGB
 		bgr = cv2.cvtColor(imdata,  cv2.COLOR_YUV2BGR_YUYV)
+		# added to rotate (changes aspect ratio and position of indicators when done here for the steamdeck)
+		#bgr = cv2.rotate(bgr, cv2.ROTATE_90_COUNTERCLOCKWISE)
+		
 		#Contrast
 		bgr = cv2.convertScaleAbs(bgr, alpha=alpha)#Contrast
 		#bicubic interpolate, upscale and blur
@@ -348,6 +350,6 @@ while(cap.isOpened()):
 
 		if keyPress == ord('q'):
 			break
-			capture.release()
-			cv2.destroyAllWindows()
-		
+
+capture.release()
+cv2.destroyAllWindows()
