@@ -29,6 +29,7 @@ import numpy as np
 import argparse
 import time
 import io
+import platform
 
 #We need to know if we are running on the Pi, because openCV behaves a little oddly on all the builds!
 #https://raspberrypi.stackexchange.com/questions/5100/detect-that-a-python-program-is-running-on-the-pi
@@ -51,14 +52,20 @@ else:
 	dev = 0
 	
 #init video
-cap = cv2.VideoCapture('/dev/video'+str(dev), cv2.CAP_V4L)
+if platform.system() == 'Windows':
+	cap = cv2.VideoCapture(int(dev))
+else:
+	cap = cv2.VideoCapture('/dev/video'+str(dev), cv2.CAP_V4L)
 #cap = cv2.VideoCapture(0)
 #pull in the video but do NOT automatically convert to RGB, else it breaks the temperature data!
 #https://stackoverflow.com/questions/63108721/opencv-setting-videocap-property-to-cap-prop-convert-rgb-generates-weird-boolean
 if isPi == True:
 	cap.set(cv2.CAP_PROP_CONVERT_RGB, 0.0)
 else:
-	cap.set(cv2.CAP_PROP_CONVERT_RGB, False)
+	try:
+		cap.set(cv2.CAP_PROP_CONVERT_RGB, False)
+	except TypeError:
+		cap.set(cv2.CAP_PROP_CONVERT_RGB, 0)		# on Windows (and maybe other platforms) OpenCV expects 0 instead of False
 
 #256x192 General settings
 width = 256 #Sensor width
@@ -97,6 +104,9 @@ while(cap.isOpened()):
 	# Capture frame-by-frame
 	ret, frame = cap.read()
 	if ret == True:
+		if platform.system() == 'Windows':					# on Windows, OpenCV outputs the frame in a different format
+			frame = np.reshape(frame[0], (192*2, 256, 2))	# if there's a "can't reshape size xxxx into shape ..." error here, you most likely used the wrong --device ID
+
 		imdata,thdata = np.array_split(frame, 2)
 		#now parse the data from the bottom frame and convert to temp!
 		#https://www.eevblog.com/forum/thermal-imaging/infiray-and-their-p2-pro-discussion/200/
@@ -348,6 +358,6 @@ while(cap.isOpened()):
 
 		if keyPress == ord('q'):
 			break
-			capture.release()
-			cv2.destroyAllWindows()
+cap.release()
+cv2.destroyAllWindows()
 		
