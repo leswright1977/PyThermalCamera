@@ -88,17 +88,17 @@ Error checking will be implemented after I refactor and optimize the code!
 ## Key Bindings
 
 
-- a z: Increase/Decrease Blur
+- B b: Increase/Decrease Blur
 
-- s x: Floating High and Low Temp Label Threshold'
+- T t: Floating High and Low Temp Label Threshold
 
-- d c: Change Interpolated scale.(Note: This will not change the window size on the Pi!)
+- S s: Change Interpolated scale.(Note: This will not change the window size on the Pi!)
 
-- f v: Contrast
+- C c: Increase/decrease contrast
 
-- q w: Fullscreen Windowed. (Note: Going back to windowed does not seem to work on the Pi!)
+- f: Toggle fullscreen Windowed. (Note: Going back to windowed does not seem to work on the Pi!)
 
-- r t: Record and Stop
+- r: Toggle recording
 
 - m : Cycle through ColorMaps
   
@@ -113,4 +113,3 @@ Error checking will be implemented after I refactor and optimize the code!
 - The code would benefit from threading especially on low speed but multicore architectures like the Pi!
 - I might add a graph.
 - I may add the ability to arbitrarily measure points.
-
