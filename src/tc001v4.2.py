@@ -58,12 +58,14 @@ cap = cv2.VideoCapture('/dev/video'+str(dev), cv2.CAP_V4L)
 if isPi == True:
 	cap.set(cv2.CAP_PROP_CONVERT_RGB, 0.0)
 else:
-	cap.set(cv2.CAP_PROP_CONVERT_RGB, False)
+	cap.set(cv2.CAP_PROP_CONVERT_RGB, 0)
 
 #256x192 General settings
 width = 256 #Sensor width
 height = 192 #sensor height
-scale = 3 #scale multiplier
+hpos = 0.5
+vpos = 0.5
+scale = 5 #scale multiplier
 newWidth = width*scale 
 newHeight = height*scale
 alpha = 1.0 # Contrast control (1.0-3.0)
@@ -102,8 +104,8 @@ while(cap.isOpened()):
 		#https://www.eevblog.com/forum/thermal-imaging/infiray-and-their-p2-pro-discussion/200/
 		#Huge props to LeoDJ for figuring out how the data is stored and how to compute temp from it.
 		#grab data from the center pixel...
-		hi = thdata[96][128][0]
-		lo = thdata[96][128][1]
+		hi = thdata[int(height*vpos)][int(width*hpos)][0]
+		lo = thdata[int(height*vpos)][int(width*hpos)][1]
 		#print(hi,lo)
 		lo = lo*256
 		rawtemp = hi+lo
@@ -194,19 +196,19 @@ while(cap.isOpened()):
 		#print(heatmap.shape)
 
 		# draw crosshairs
-		cv2.line(heatmap,(int(newWidth/2),int(newHeight/2)+20),\
-		(int(newWidth/2),int(newHeight/2)-20),(255,255,255),2) #vline
-		cv2.line(heatmap,(int(newWidth/2)+20,int(newHeight/2)),\
-		(int(newWidth/2)-20,int(newHeight/2)),(255,255,255),2) #hline
+		cv2.line(heatmap,(int(newWidth*hpos),int(newHeight*vpos)+20),\
+		(int(newWidth*hpos),int(newHeight*vpos)-20),(255,255,255),2) #vline
+		cv2.line(heatmap,(int(newWidth*hpos)+20,int(newHeight*vpos)),\
+		(int(newWidth*hpos)-20,int(newHeight*vpos)),(255,255,255),2) #hline
 
-		cv2.line(heatmap,(int(newWidth/2),int(newHeight/2)+20),\
-		(int(newWidth/2),int(newHeight/2)-20),(0,0,0),1) #vline
-		cv2.line(heatmap,(int(newWidth/2)+20,int(newHeight/2)),\
-		(int(newWidth/2)-20,int(newHeight/2)),(0,0,0),1) #hline
+		cv2.line(heatmap,(int(newWidth*hpos),int(newHeight*vpos)+20),\
+		(int(newWidth*hpos),int(newHeight*vpos)-20),(0,0,0),1) #vline
+		cv2.line(heatmap,(int(newWidth*hpos)+20,int(newHeight*vpos)),\
+		(int(newWidth*hpos)-20,int(newHeight*vpos)),(0,0,0),1) #hline
 		#show temp
-		cv2.putText(heatmap,str(temp)+' C', (int(newWidth/2)+10, int(newHeight/2)-10),\
+		cv2.putText(heatmap,str(temp)+' C', (int(newWidth*hpos)+10, int(newHeight*vpos)-10),\
 		cv2.FONT_HERSHEY_SIMPLEX, 0.45,(0, 0, 0), 2, cv2.LINE_AA)
-		cv2.putText(heatmap,str(temp)+' C', (int(newWidth/2)+10, int(newHeight/2)-10),\
+		cv2.putText(heatmap,str(temp)+' C', (int(newWidth*hpos)+10, int(newHeight*vpos)-10),\
 		cv2.FONT_HERSHEY_SIMPLEX, 0.45,(0, 255, 255), 1, cv2.LINE_AA)
 
 		if hud==True:
@@ -271,6 +273,18 @@ while(cap.isOpened()):
 			videoOut.write(heatmap)
 		
 		keyPress = cv2.waitKey(1)
+		
+		if keyPress == ord('i'): 
+			vpos -= 0.01
+		if keyPress == ord('k'): 
+			vpos += 0.01
+		if keyPress == ord('j'): 
+			hpos -= 0.01
+		if keyPress == ord('l'): 
+			hpos += 0.01
+
+		hpos = max(min(hpos,0.99), 0.01)
+		vpos = max(min(vpos,0.99), 0.01)
 		if keyPress == ord('a'): #Increase blur radius
 			rad += 1
 		if keyPress == ord('z'): #Decrease blur radius
