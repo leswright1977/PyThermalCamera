@@ -58,7 +58,7 @@ cap = cv2.VideoCapture('/dev/video'+str(dev), cv2.CAP_V4L)
 if isPi == True:
 	cap.set(cv2.CAP_PROP_CONVERT_RGB, 0.0)
 else:
-	cap.set(cv2.CAP_PROP_CONVERT_RGB, 0)
+	cap.set(cv2.CAP_PROP_CONVERT_RGB, False)
 
 #256x192 General settings
 width = 256 #Sensor width
