@@ -29,7 +29,8 @@ import numpy as np
 import argparse
 import time
 import io
-
+import random
+import copy
 #We need to know if we are running on the Pi, because openCV behaves a little oddly on all the builds!
 #https://raspberrypi.stackexchange.com/questions/5100/detect-that-a-python-program-is-running-on-the-pi
 def is_raspberrypi():
@@ -58,12 +59,14 @@ cap = cv2.VideoCapture('/dev/video'+str(dev), cv2.CAP_V4L)
 if isPi == True:
 	cap.set(cv2.CAP_PROP_CONVERT_RGB, 0.0)
 else:
-	cap.set(cv2.CAP_PROP_CONVERT_RGB, False)
+	cap.set(cv2.CAP_PROP_CONVERT_RGB, 0)
 
 #256x192 General settings
 width = 256 #Sensor width
 height = 192 #sensor height
-scale = 3 #scale multiplier
+hpos = 0.5
+vpos = 0.5
+scale = 5 #scale multiplier
 newWidth = width*scale 
 newHeight = height*scale
 alpha = 1.0 # Contrast control (1.0-3.0)
@@ -77,21 +80,52 @@ threshold = 2
 hud = True
 recording = False
 elapsed = "00:00:00"
-snaptime = "None"
-
+curr_time = "None"
+sensor_list = []
 def rec():
 	now = time.strftime("%Y%m%d--%H%M%S")
 	#do NOT use mp4 here, it is flakey!
 	videoOut = cv2.VideoWriter(now+'output.avi', cv2.VideoWriter_fourcc(*'XVID'),25, (newWidth,newHeight))
 	return(videoOut)
 
-def snapshot(heatmap):
-	#I would put colons in here, but it Win throws a fit if you try and open them!
-	now = time.strftime("%Y%m%d-%H%M%S") 
-	snaptime = time.strftime("%H:%M:%S")
-	cv2.imwrite("TC001"+now+".png", heatmap)
-	return snaptime
- 
+
+class SensorPoint:
+	def __init__(self, hpos, vpos, id):
+		self.hpos = copy.copy(hpos)
+		self.vpos = copy.copy(vpos)
+		self.name = name="TT-{}".format(id)
+
+
+	def display(self):
+		hi = thdata[int(height*self.vpos)][int(width*self.hpos)][0]
+		lo = thdata[int(height*self.vpos)][int(width*self.hpos)][1]
+		#print(hi,lo)
+		lo = lo*256
+		rawtemp = hi+lo
+		#print(rawtemp)
+		self.temp = (rawtemp/64)-273.15
+		self.temp = round(self.temp,2)
+		# draw crosshairs
+		cv2.line(heatmap,(int(newWidth*self.hpos),int(newHeight*self.vpos)+20),\
+		(int(newWidth*self.hpos),int(newHeight*self.vpos)-20),(255,255,255),2) #vline
+		cv2.line(heatmap,(int(newWidth*self.hpos)+20,int(newHeight*self.vpos)),\
+		(int(newWidth*self.hpos)-20,int(newHeight*self.vpos)),(255,255,255),2) #hline
+
+		cv2.line(heatmap,(int(newWidth*self.hpos),int(newHeight*self.vpos)+20),\
+		(int(newWidth*self.hpos),int(newHeight*self.vpos)-20),(0,0,0),1) #vline
+		cv2.line(heatmap,(int(newWidth*self.hpos)+20,int(newHeight*self.vpos)),\
+		(int(newWidth*self.hpos)-20,int(newHeight*self.vpos)),(0,0,0),1) #hline
+		#show temp
+		cv2.putText(heatmap,str(self.temp)+' C', (int(newWidth*self.hpos)+10, int(newHeight*self.vpos)-10),\
+		cv2.FONT_HERSHEY_SIMPLEX, 0.45,(0, 0, 0), 2, cv2.LINE_AA)
+		cv2.putText(heatmap,str(self.temp)+' C', (int(newWidth*self.hpos)+10, int(newHeight*self.vpos)-10),\
+		cv2.FONT_HERSHEY_SIMPLEX, 0.45,(0, 255, 255), 1, cv2.LINE_AA)
+		#show name
+		cv2.putText(heatmap,str(self.name), (int(newWidth*self.hpos)+10, int(newHeight*self.vpos)-25),\
+		cv2.FONT_HERSHEY_SIMPLEX, 0.45,(0, 0, 0), 2, cv2.LINE_AA)
+		cv2.putText(heatmap,str(self.name), (int(newWidth*self.hpos)+10, int(newHeight*self.vpos)-25),\
+		cv2.FONT_HERSHEY_SIMPLEX, 0.45,(0, 255, 255), 1, cv2.LINE_AA)
+
 
 while(cap.isOpened()):
 	# Capture frame-by-frame
@@ -102,8 +136,8 @@ while(cap.isOpened()):
 		#https://www.eevblog.com/forum/thermal-imaging/infiray-and-their-p2-pro-discussion/200/
 		#Huge props to LeoDJ for figuring out how the data is stored and how to compute temp from it.
 		#grab data from the center pixel...
-		hi = thdata[96][128][0]
-		lo = thdata[96][128][1]
+		hi = thdata[int(height*vpos)][int(width*hpos)][0]
+		lo = thdata[int(height*vpos)][int(width*hpos)][1]
 		#print(hi,lo)
 		lo = lo*256
 		rawtemp = hi+lo
@@ -192,23 +226,24 @@ while(cap.isOpened()):
 			cmapText = 'Inv Rainbow'
 
 		#print(heatmap.shape)
-
+		for sensor in sensor_list:
+			sensor.display()
 		# draw crosshairs
-		cv2.line(heatmap,(int(newWidth/2),int(newHeight/2)+20),\
-		(int(newWidth/2),int(newHeight/2)-20),(255,255,255),2) #vline
-		cv2.line(heatmap,(int(newWidth/2)+20,int(newHeight/2)),\
-		(int(newWidth/2)-20,int(newHeight/2)),(255,255,255),2) #hline
+		cv2.line(heatmap,(int(newWidth*hpos),int(newHeight*vpos)+20),\
+		(int(newWidth*hpos),int(newHeight*vpos)-20),(255,255,255),2) #vline
+		cv2.line(heatmap,(int(newWidth*hpos)+20,int(newHeight*vpos)),\
+		(int(newWidth*hpos)-20,int(newHeight*vpos)),(255,255,255),2) #hline
 
-		cv2.line(heatmap,(int(newWidth/2),int(newHeight/2)+20),\
-		(int(newWidth/2),int(newHeight/2)-20),(0,0,0),1) #vline
-		cv2.line(heatmap,(int(newWidth/2)+20,int(newHeight/2)),\
-		(int(newWidth/2)-20,int(newHeight/2)),(0,0,0),1) #hline
+		cv2.line(heatmap,(int(newWidth*hpos),int(newHeight*vpos)+20),\
+		(int(newWidth*hpos),int(newHeight*vpos)-20),(0,0,0),1) #vline
+		cv2.line(heatmap,(int(newWidth*hpos)+20,int(newHeight*vpos)),\
+		(int(newWidth*hpos)-20,int(newHeight*vpos)),(0,0,0),1) #hline
 		#show temp
-		cv2.putText(heatmap,str(temp)+' C', (int(newWidth/2)+10, int(newHeight/2)-10),\
+		cv2.putText(heatmap,str(temp)+' C', (int(newWidth*hpos)+10, int(newHeight*vpos)-10),\
 		cv2.FONT_HERSHEY_SIMPLEX, 0.45,(0, 0, 0), 2, cv2.LINE_AA)
-		cv2.putText(heatmap,str(temp)+' C', (int(newWidth/2)+10, int(newHeight/2)-10),\
+		cv2.putText(heatmap,str(temp)+' C', (int(newWidth*hpos)+10, int(newHeight*vpos)-10),\
 		cv2.FONT_HERSHEY_SIMPLEX, 0.45,(0, 255, 255), 1, cv2.LINE_AA)
-
+		
 		if hud==True:
 			# display black box for our data
 			cv2.rectangle(heatmap, (0, 0),(160, 120), (0,0,0), -1)
@@ -230,16 +265,16 @@ while(cap.isOpened()):
 
 			cv2.putText(heatmap,'Contrast: '+str(alpha)+' ', (10, 84),\
 			cv2.FONT_HERSHEY_SIMPLEX, 0.4,(0, 255, 255), 1, cv2.LINE_AA)
+			
 
-
-			cv2.putText(heatmap,'Snapshot: '+snaptime+' ', (10, 98),\
-			cv2.FONT_HERSHEY_SIMPLEX, 0.4,(0, 255, 255), 1, cv2.LINE_AA)
+			curr_time = time.strftime("%Y-%m-%d %H:%M:%S")
+			cv2.putText(heatmap,curr_time, (10, 112), cv2.FONT_HERSHEY_SIMPLEX, 0.4,(0, 255, 255), 1, cv2.LINE_AA)
 
 			if recording == False:
-				cv2.putText(heatmap,'Recording: '+elapsed, (10, 112),\
-				cv2.FONT_HERSHEY_SIMPLEX, 0.4,(200, 200, 200), 1, cv2.LINE_AA)
+				cv2.putText(heatmap,'Not recording', (10, 98),\
+				cv2.FONT_HERSHEY_SIMPLEX, 0.4,(0, 255, 255), 1, cv2.LINE_AA)
 			if recording == True:
-				cv2.putText(heatmap,'Recording: '+elapsed, (10, 112),\
+				cv2.putText(heatmap,'Recording: '+elapsed, (10, 98),\
 				cv2.FONT_HERSHEY_SIMPLEX, 0.4,(40, 40, 255), 1, cv2.LINE_AA)
 		
 		#Yeah, this looks like we can probably do this next bit more efficiently!
@@ -271,6 +306,22 @@ while(cap.isOpened()):
 			videoOut.write(heatmap)
 		
 		keyPress = cv2.waitKey(1)
+		print(keyPress)
+		if keyPress == ord('i'): 
+			vpos -= 0.005
+		if keyPress == ord('k'): 
+			vpos += 0.005
+		if keyPress == ord('j'): 
+			hpos -= 0.005
+		if keyPress == ord('l'): 
+			hpos += 0.005
+		if keyPress == ord('o'):
+			sensor_list += [SensorPoint(hpos,vpos,len(sensor_list))]
+		if keyPress == 8 and len(sensor_list):
+			sensor_list.pop()
+
+		hpos = max(min(hpos,0.99), 0.01)
+		vpos = max(min(vpos,0.99), 0.01)
 		if keyPress == ord('a'): #Increase blur radius
 			rad += 1
 		if keyPress == ord('z'): #Decrease blur radius
@@ -344,7 +395,10 @@ while(cap.isOpened()):
 			elapsed = "00:00:00"
 
 		if keyPress == ord('p'): #f to finish reording
-			snaptime = snapshot(heatmap)
+			#I would put colons in here, but it Win throws a fit if you try and open them!
+			now = time.strftime("%Y-%m-%d-%H-%M-%S") 
+			cv2.imwrite("TC001-"+now+".png", heatmap)
+			
 
 		if keyPress == ord('q'):
 			break
